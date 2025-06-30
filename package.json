@@ -9,6 +9,7 @@
     "browsersync": "browser-sync start --proxy http://localhost:3000 --files \"public/assets/styles/**/*.css,public/assets/js/**/*.js,views/**/*.ejs\" --no-notify",
     "start": "concurrently \"npm run sass\" \"npm run server\" \"npm run browsersync\""
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Nicolas-Puchois/blog-jeux-video-frontend.git"
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/Nicolas-Puchois/blog-jeux-video-frontend#readme",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.0.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
