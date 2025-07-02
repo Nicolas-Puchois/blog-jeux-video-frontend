@@ -124,3 +124,33 @@ main {
     }
   }
 }
+
+@media only screen and (max-width: 980px) {
+  main {
+    .home-global {
+      .cards-container {
+        .card:last-child {
+          display: none;
+        }
+
+        .card {
+          width: calc(100% / 2 - 2rem);
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .home-global {
+    .cards-container {
+      .card:nth-child(odd) {
+        display: none;
+      }
+
+      .card {
+        width: calc(100% / 2 - 2rem);
+      }
+    }
+  }
+}
