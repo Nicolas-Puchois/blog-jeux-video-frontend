@@ -2,7 +2,7 @@ header {
   display: flex;
   padding: 1rem;
   background-color: #1b263b;
-  color: #e0e1dd;
+  color: #ffffff;
   position: relative;
 
   & img {
@@ -39,6 +39,48 @@ header {
             &:hover {
               color: #ff005c;
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  header {
+    .navbar {
+      .container {
+        width: 100%;
+        justify-content: flex-end;
+        padding-right: 2rem;
+
+        .toggle {
+          display: block;
+          background: none;
+          border: none;
+          color: #ffffff;
+          font-size: 1.5rem;
+          padding: 0.5rem;
+          transition: color 0.3s ease;
+        }
+
+        ul {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background-color: #1b263b;
+          flex-direction: column;
+          padding: 1rem 0;
+
+          &.active {
+            display: flex;
+          }
+
+          li {
+            text-align: center;
+            padding: 0.5rem 0;
           }
         }
       }

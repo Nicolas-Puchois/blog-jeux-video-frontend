@@ -17,7 +17,12 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/styles.css"
     />
-
+    <% if(title == "Accueil"){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/home/home.css"
+    />
+    <% } %>
     <title><%= title || "InfoD0tGame" %></title>
   </head>
 
