@@ -22,6 +22,11 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/home/home.css"
     />
+    <% } %> <% if(title == "S'inscrire"){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/form/form.css"
+    />
     <% } %>
     <title><%= title || "InfoD0tGame" %></title>
   </head>
@@ -31,4 +36,10 @@
     <main><%- include(view)%></main>
     <footer><%-include("./components/footer") %></footer>
   </body>
+  <% if(title == "S'inscrire"){ %>
+  <script
+    type="module"
+    src="<%= process.env.SITE_URL %>/assets/js/register.js"
+  ></script>
+  <% } %>
 </html>

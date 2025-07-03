@@ -9,4 +9,8 @@ router.get("/", (req, res) => {
   res.render("layout", { title: "Accueil", view: "pages/home" });
 });
 
+router.get("/register", (req, res) => {
+  res.render("layout", { title: "S'inscrire", view: "pages/register" });
+});
+
 export default router;

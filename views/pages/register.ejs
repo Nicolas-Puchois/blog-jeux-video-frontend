@@ -1,0 +1,55 @@
+<div class="register-container">
+  <h1>S'enregistrer</h1>
+
+  <form id="register-form" method="POST" action="">
+    <input
+      type="hidden"
+      id="api-url"
+      value="<%= typeof API_URL !== 'undefined' ? API_URL : '' %>"
+    />
+
+    <div class="form-group">
+      <label for="username">Nom d'utilisateur</label>
+      <input type="text" class="form-control" id="username" name="username" />
+      <span class="error" data-error="username"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Adresse email</label>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        autocomplete="username"
+        name="email"
+      />
+      <span class="error" data-error="email"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        autocomplete="current-password"
+      />
+      <span class="error" data-error="password"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="repeat-password"> Répéter le mot de passe</label>
+      <input
+        type="password"
+        class="form-control"
+        id="repeat-password"
+        name="repeat-password"
+        autocomplete="current-password"
+      />
+      <span class="error" data-error="repeat-password"></span>
+    </div>
+
+    <button type="submit" class="btn">S'inscrire</button>
+  </form>
+</div>
