@@ -10,7 +10,11 @@ router.get("/", (req, res) => {
 });
 
 router.get("/register", (req, res) => {
-  res.render("layout", { title: "S'inscrire", view: "pages/register" });
+  res.render("layout", {
+    title: "S'inscrire",
+    view: "pages/register",
+    ...globals,
+  });
 });
 
 export default router;

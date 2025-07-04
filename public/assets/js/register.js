@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   registerForm.addEventListener("submit", async (e) => {
     const API_URL = document.querySelector("#api-url").value;
+    console.log(API_URL);
+
     const message = document.querySelector("#verify-msg");
     e.preventDefault();
     registerForm
@@ -30,10 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // Recuperation des saisie via les attributs'name" => value
     const formData = new FormData(registerForm);
-
     const jsonData = {};
     formData.forEach((value, key) => {
-      jsonData[key] = value;
+      if (key !== "repeat-password") {
+        jsonData[key] = value;
+      }
     });
 
     try {
