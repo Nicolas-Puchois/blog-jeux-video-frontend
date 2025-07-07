@@ -27,6 +27,11 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/form/form.css"
     />
+    <% } %> <% if(title == "Valider votre Email"){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/validateEmail/validateEmail.css"
+    />
     <% } %>
     <title><%= title || "InfoD0tGame" %></title>
   </head>
@@ -40,6 +45,11 @@
   <script
     type="module"
     src="<%= process.env.SITE_URL %>/assets/js/register.js"
+  ></script>
+  <% } %> <% if(title == "Valider votre Email"){ %>
+  <script
+    type="module"
+    src="<%= process.env.SITE_URL %>/assets/js/validateEmail.js"
   ></script>
   <% } %>
 </html>

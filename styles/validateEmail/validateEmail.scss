@@ -1,0 +1,28 @@
+@use "../abstract/varaible" as *;
+
+.verify {
+  padding: $spacing-xl;
+
+  .message-container {
+    max-width: 400px;
+    margin: $spacing-xl auto;
+    padding: $spacing-xl;
+    background: $gray-100;
+    border: 1px solid $gray-300;
+    border-radius: $border-radius-lg;
+    text-align: center;
+  }
+
+  #verify-msg {
+    margin-bottom: $spacing-md;
+  }
+
+  #login-link {
+    margin-top: $spacing-xl;
+
+    a {
+      margin-top: $spacing-md;
+      display: inline-block;
+    }
+  }
+}

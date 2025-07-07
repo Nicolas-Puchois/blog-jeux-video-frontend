@@ -1,5 +1,6 @@
 import { fetchData } from "../../lib/fetchData.js";
 import { validateRegisterForm } from "../../services/validate.js";
+import { showNotification } from "../../services/notification.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.querySelector("#register-form");

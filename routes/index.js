@@ -17,4 +17,12 @@ router.get("/register", (req, res) => {
   });
 });
 
+router.get("/validateEmail", (req, res) => {
+  res.render("layout", {
+    title: "Valider votre Email",
+    view: "pages/validateEmail",
+    ...globals,
+  });
+});
+
 export default router;
