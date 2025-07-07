@@ -2,12 +2,25 @@
 <nav class="navbar">
   <div class="container">
     <button class="toggle">&#9776;</button>
-    <ul>
-      <li><a href="/">Accueil</a></li>
-      <li><a href="/articles">Articles</a></li>
-      <li><a href="/critiques">Critiques</a></li>
-      <li><a href="/register">S'enregistrer</a></li>
-      <li><a href="/login">Se Connecter</a></li>
+    <ul class="nav-links">
+      <li>
+        <a href="/"><i class="fas fa-home"></i> Accueil</a>
+      </li>
+      <li>
+        <a href="/articles"><i class="fas fa-newspaper"></i> Articles</a>
+      </li>
+      <li>
+        <a href="/critiques"><i class="fas fa-star"></i> Critiques</a>
+      </li>
+      <!-- Les liens d'authentification seront insérés ici dynamiquement -->
+      <li id="auth-links-container">
+        <a href="/login"
+          ><i class="fas fa-right-to-bracket"></i> Se Connecter</a
+        >
+      </li>
+      <li id="register-link-container">
+        <a href="/register"><i class="fas fa-user-plus"></i> S&apos;inscrire</a>
+      </li>
       <li>
         <div id="toggle-dark-mode">
           <i class="fas fa-moon" data-theme-toggler></i>
@@ -16,3 +29,8 @@
     </ul>
   </div>
 </nav>
+
+<script type="module">
+  import { NavigationManager } from "/services/navigation.js";
+  NavigationManager.init();
+</script>

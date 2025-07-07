@@ -23,11 +23,38 @@ export function validateRegisterForm(form) {
       " Mot de passe invalide : 12 caractères minimum, 1 majuscule, 1 chiffre, 1 caractère spécial";
   }
   const repeatPassword = formData.get("repeat-password")?.trim();
-  if (password !== repeatPassword) {
+  if (password !== repeatPassword && repeatPassword) {
     errors["repeat-password"] = "Les mots de passes ne correspondent pas !";
   }
   return {
     valid: Object.keys(errors).length == 0,
+    errors,
+  };
+}
+
+export function validateForm(form) {
+  const formData = new FormData(form);
+  const errors = {};
+
+  // Validation de l'email
+  const emailRegex = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+  );
+  const email = formData.get("email")?.trim();
+  if (!email) {
+    errors.email = "L'email est requis";
+  } else if (!emailRegex.test(email)) {
+    errors.email = "L'email est invalide";
+  }
+
+  // Validation du mot de passe
+  const password = formData.get("password")?.trim();
+  if (!password) {
+    errors.password = "Le mot de passe est requis";
+  }
+
+  return {
+    valid: Object.keys(errors).length === 0,
     errors,
   };
 }

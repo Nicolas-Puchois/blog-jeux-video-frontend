@@ -25,4 +25,12 @@ router.get("/validateEmail", (req, res) => {
   });
 });
 
+router.get("/login", (req, res) => {
+  res.render("layout", {
+    title: "Se Connecter",
+    view: "pages/login",
+    ...globals,
+  });
+});
+
 export default router;

@@ -22,7 +22,7 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/home/home.css"
     />
-    <% } %> <% if(title == "S'inscrire"){ %>
+    <% } %> <% if(title == "S'inscrire" || title == "Se Connecter"){ %>
     <link
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/form/form.css"
@@ -51,5 +51,14 @@
     type="module"
     src="<%= process.env.SITE_URL %>/assets/js/validateEmail.js"
   ></script>
+  <% } %> <% if(title == "Se Connecter"){ %>
+  <script
+    type="module"
+    src="<%= process.env.SITE_URL %>/assets/js/login.js"
+  ></script>
   <% } %>
+  <script
+    type="module"
+    src="<%= process.env.SITE_URL %>/services/notification.js"
+  ></script>
 </html>
