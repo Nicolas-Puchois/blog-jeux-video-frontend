@@ -9,6 +9,14 @@ router.get("/", (req, res) => {
   res.render("layout", { title: "Accueil", view: "pages/home" });
 });
 
+router.get("/articles", (req, res) => {
+  res.render("layout", {
+    title: "Articles",
+    view: "pages/articles",
+    ...globals,
+  });
+});
+
 router.get("/register", (req, res) => {
   res.render("layout", {
     title: "S'inscrire",
@@ -29,6 +37,23 @@ router.get("/login", (req, res) => {
   res.render("layout", {
     title: "Se Connecter",
     view: "pages/login",
+    ...globals,
+  });
+});
+
+router.get("/article/create", (req, res) => {
+  res.render("layout", {
+    title: "Créer un article",
+    view: "pages/createArticle",
+    ...globals,
+  });
+});
+
+// Route pour afficher un article spécifique
+router.get("/article/:id", (req, res) => {
+  res.render("layout", {
+    title: "Article",
+    view: "pages/article",
     ...globals,
   });
 });

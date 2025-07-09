@@ -1,0 +1,96 @@
+<div class="articles-container">
+  <section class="articles-header">
+    <h1>Les articles</h1>
+    <a href="/article/create" class="create-article-btn user-role author-only"
+      >Créer un article</a
+    >
+  </section>
+
+  <section class="articles-filter">
+    <h2>Filtre</h2>
+    <div class="filter-options">
+      <div class="filter-group">
+        <label>Date de parution</label>
+        <input type="date" class="filter-date" value="2025/05/20" />
+      </div>
+      <div class="filter-group">
+        <label>Auteur</label>
+        <input type="text" class="filter-author" placeholder="John Doe" />
+      </div>
+      <div class="filter-group">
+        <label>Tags</label>
+        <input
+          type="text"
+          class="filter-tags"
+          placeholder="esport, publicité, ..."
+        />
+      </div>
+    </div>
+  </section>
+
+  <div class="articles-list">
+    <!-- Article Card -->
+    <article class="article-card">
+      <div class="article-image">
+        <img src="assets/images/gamepad.png" alt="Image de l'article" />
+      </div>
+      <div class="article-content">
+        <h3>Les nouveautés gaming</h3>
+        <div class="article-metadata">
+          <span class="article-date">20/05/2025</span>
+          <div class="article-tags">
+            <span class="tag">gaming</span>
+            <span class="tag">news</span>
+          </div>
+        </div>
+        <p class="article-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
+          risus.
+        </p>
+      </div>
+    </article>
+
+    <!-- Repeat similar article cards -->
+    <article class="article-card">
+      <div class="article-image">
+        <img src="assets/images/gamepad.png" alt="Image de l'article" />
+      </div>
+      <div class="article-content">
+        <h3>Top 10 des fps</h3>
+        <div class="article-metadata">
+          <span class="article-date">20/05/2025</span>
+          <div class="article-tags">
+            <span class="tag">fps</span>
+            <span class="tag">gaming</span>
+          </div>
+        </div>
+        <p class="article-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </p>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-image">
+        <img src="assets/images/gamepad.png" alt="Image de l'article" />
+      </div>
+      <div class="article-content">
+        <h3>L'optimisation des jeux</h3>
+        <div class="article-metadata">
+          <span class="article-date">20/05/2025</span>
+          <div class="article-tags">
+            <span class="tag">optimisation</span>
+            <span class="tag">tech</span>
+          </div>
+        </div>
+        <p class="article-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </p>
+      </div>
+    </article>
+  </div>
+
+  <div class="articles-pagination">
+    <button class="voir-plus">Voir plus d'articles ...</button>
+  </div>
+</div>

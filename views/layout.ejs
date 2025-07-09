@@ -22,6 +22,11 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/home/home.css"
     />
+    <% } %> <% if(title == "Articles"){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/articles/articles.css"
+    />
     <% } %> <% if(title == "S'inscrire" || title == "Se Connecter"){ %>
     <link
       rel="stylesheet"
@@ -32,7 +37,13 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/validateEmail/validateEmail.css"
     />
+    <% } %> <% if(title == "Créer un article"){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/createArticles/createArticle.css"
+    />
     <% } %>
+
     <title><%= title || "InfoD0tGame" %></title>
   </head>
 
@@ -60,5 +71,9 @@
   <script
     type="module"
     src="<%= process.env.SITE_URL %>/services/notification.js"
+  ></script>
+  <script
+    type="module"
+    src="<%= process.env.SITE_URL %>/assets/js/role.js"
   ></script>
 </html>

@@ -1,0 +1,81 @@
+<div class="create-article-container">
+  <h1>Créer un article</h1>
+
+  <form id="article-form" class="article-form">
+    <input type="hidden" id="api-url" value="<%= API_URL %>" />
+
+    <div class="form-group">
+      <label for="title">Titre de l'article</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        placeholder="Entrez le titre de votre article"
+        required
+      />
+      <span class="error" data-error="title"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="tags">Tags (séparés par des virgules)</label>
+      <input
+        type="text"
+        id="tags"
+        name="tags"
+        placeholder="gaming, tech, optimisation, ..."
+        required
+      />
+      <span class="error" data-error="tags"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Image principale</label>
+      <div class="image-upload-container">
+        <input
+          type="file"
+          id="image"
+          name="image"
+          accept="image/jpeg,image/png,image/webp"
+          required
+        />
+        <img
+          id="preview-image"
+          alt="Prévisualisation"
+          style="display: none; max-width: 100%; margin-top: 1rem"
+        />
+      </div>
+      <span class="error" data-error="image"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="introduction">Introduction</label>
+      <textarea
+        id="introduction"
+        name="introduction"
+        rows="3"
+        placeholder="Écrivez une brève introduction de votre article..."
+        required
+      ></textarea>
+      <span class="error" data-error="introduction"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="content">Contenu de l'article</label>
+      <textarea
+        id="content"
+        name="content"
+        rows="15"
+        placeholder="Rédigez votre article ici..."
+        required
+      ></textarea>
+      <span class="error" data-error="content"></span>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-preview">Prévisualiser</button>
+      <button type="submit" class="btn-submit">Publier l'article</button>
+    </div>
+
+    <div id="form-message" class="form-message"></div>
+  </form>
+</div>

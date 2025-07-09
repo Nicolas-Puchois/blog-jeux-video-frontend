@@ -68,13 +68,15 @@ export class AuthManager {
     if (!token) return false;
 
     try {
+      // Le token JWT est composé de 3 parties : header.payload.signature
+      // Nous voulons décoder le payload qui est à l'index 1
       const payload = JSON.parse(atob(token.split(".")[1]));
+      // Vérifie si l'utilisateur a le rôle admin
       return (
-        payload.roles &&
-        Array.isArray(payload.roles) &&
-        payload.roles.includes("ROLE_ADMIN")
+        payload.role &&
+        Array.isArray(payload.role) &&
+        (payload.role.includes("ROLE_ADMIN") || payload.role.includes("admin"))
       );
-      // Changement de 'role' en 'roles' pour correspondre au format du token
     } catch (error) {
       console.error("Erreur parsing token:", error);
       return false;
