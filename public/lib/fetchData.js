@@ -21,15 +21,25 @@ export async function fetchData({ route, api, options = {} }) {
     delete options.params;
   }
 
+  // Debug de la requête
+  console.log("URL complète:", `${api}${route}${queryString}`);
+  console.log("Headers:", headers);
+  console.log("Options:", options);
+
   // Effectuer la requête
   const result = await fetch(`${api}${route}${queryString}`, {
     ...options,
     headers,
   });
 
+  // Debug de la réponse
+  console.log("Status:", result.status);
+  console.log("Status Text:", result.statusText);
+  console.log("Response Headers:", Object.fromEntries(result.headers));
+
   // Traiter la réponse
   const responseData = await result.text();
-  console.log(responseData);
+  console.log("Response Data:", responseData);
   let jsonData;
 
   try {

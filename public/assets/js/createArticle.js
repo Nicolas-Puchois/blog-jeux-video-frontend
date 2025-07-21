@@ -1,56 +1,13 @@
 import { fetchData } from "../../lib/fetchData.js";
-
-const validateArticleForm = (form) => {
-  const errors = {};
-
-  // Validation du titre
-  const title = form.querySelector('[name="title"]').value.trim();
-  if (!title) {
-    errors.title = "Le titre est requis";
-  } else if (title.length < 5) {
-    errors.title = "Le titre doit contenir au moins 5 caractères";
-  }
-
-  // Validation du contenu
-  const content = form.querySelector('[name="content"]').value.trim();
-  if (!content) {
-    errors.content = "Le contenu est requis";
-  } else if (content.length < 100) {
-    errors.content = "Le contenu doit contenir au moins 100 caractères";
-  }
-
-  // Validation des tags
-  const tags = form.querySelector('[name="tags"]').value.trim();
-  if (!tags) {
-    errors.tags = "Au moins un tag est requis";
-  }
-
-  // Validation de l'image
-  const image = form.querySelector('[name="image"]').files[0];
-  if (!image) {
-    errors.image = "Une image est requise";
-  } else {
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!allowedTypes.includes(image.type)) {
-      errors.image = "Le format d'image doit être JPEG, PNG ou WEBP";
-    }
-    if (image.size > 5 * 1024 * 1024) {
-      // 5MB
-      errors.image = "L'image ne doit pas dépasser 5MB";
-    }
-  }
-
-  return {
-    valid: Object.keys(errors).length === 0,
-    errors,
-  };
-};
+import { validateArticleForm } from "../../services/formCreationValidate.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const articleForm = document.querySelector("#article-form");
   const message = document.querySelector("#form-message");
   const previewImage = document.querySelector("#preview-image");
-
+  // Récupération de l'URL de l'API depuis l'input hidden
+  const apiUrlInput = document.querySelector("#api-url");
+  const API_URL = apiUrlInput.value;
   // Prévisualisation de l'image
   if (articleForm.querySelector('[name="image"]')) {
     articleForm
@@ -70,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   articleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const API_URL = document.querySelector("#api-url").value;
 
     // Réinitialisation des erreurs
     articleForm
@@ -97,6 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Préparation des données
     const formData = new FormData(articleForm);
 
+    // Debug des données avant envoi
+    for (let [key, value] of formData.entries()) {
+      console.log(
+        `${key}:`,
+        value instanceof File ? `File (${value.size} bytes)` : value
+      );
+    }
+
     // Conversion des tags en tableau
     const tags = formData
       .get("tags")
@@ -105,26 +69,52 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.set("tags", JSON.stringify(tags));
 
     try {
+      console.log("Envoi vers:", `${API_URL}/articles`);
+
+      // Debug de la taille des données
+      // let totalSize = 0;
+      // for (let pair of formData.entries()) {
+      //   console.log("Champ:", pair[0]);
+      //   if (pair[1] instanceof File) {
+      //     console.log("- Type:", pair[1].type);
+      //     console.log("- Taille:", pair[1].size, "bytes");
+      //     totalSize += pair[1].size;
+      //   } else {
+      //     console.log("- Valeur:", pair[1]);
+      //     totalSize += new Blob([pair[1]]).size;
+      //   }
+      // }
+      // console.log("Taille totale de la requête:", totalSize, "bytes");
+
       const result = await fetchData({
         route: "/articles",
         api: API_URL,
         options: {
           method: "POST",
-          body: formData, // Envoi direct du FormData pour gérer le fichier
+          body: formData,
           headers: {
-            // Ne pas définir Content-Type pour FormData
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            // Ne pas définir Content-Type car il sera automatiquement défini avec le bon boundary pour multipart/form-data
+            Authorization: `Bearer ${localStorage.getItem("JWTtoken")}`,
           },
         },
       });
 
       if (!result.success) {
-        throw new Error(result.error);
+        throw new Error(
+          result.error || "Erreur lors de la création de l'article"
+        );
       }
 
-      // Redirection vers la page de l'article créé
-      window.location.href = `/article/${result.articleId}`;
+      // Affichage du succès
+      message.textContent = "Article créé avec succès !";
+      message.style.color = "green";
+
+      // Redirection vers la page des articles après 2 secondes
+      setTimeout(() => {
+        window.location.href = "/articles";
+      }, 2000);
     } catch (error) {
+      console.error("Erreur:", error);
       message.textContent = error.message;
       message.style.color = "red";
     }
