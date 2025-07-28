@@ -29,19 +29,19 @@ export const validateArticleForm = (form) => {
   }
 
   // Validation de l'image
-  // const image = form.querySelector('[name="image"]').files[0];
-  // if (!image) {
-  //   errors.image = "Une image est requise";
-  // } else {
-  //   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-  //   if (!allowedTypes.includes(image.type)) {
-  //     errors.image = "Le format d'image doit être JPEG, PNG ou WEBP";
-  //   }
-  //   if (image.size > 10 * 1024 * 1024) {
-  //     // 10MB
-  //     errors.image = "L'image ne doit pas dépasser 10MB";
-  //   }
-  // }
+  const image = form.querySelector('[name="image"]').files[0];
+  if (!image) {
+    errors.image = "Une image est requise";
+  } else {
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!allowedTypes.includes(image.type)) {
+      errors.image = "Le format d'image doit être JPEG, PNG ou WEBP";
+    }
+    if (image.size > 10 * 1024 * 1024) {
+      // 10MB
+      errors.image = "L'image ne doit pas dépasser 10MB";
+    }
+  }
 
   return {
     valid: Object.keys(errors).length === 0,

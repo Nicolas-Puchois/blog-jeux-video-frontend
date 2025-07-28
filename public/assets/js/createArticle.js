@@ -53,14 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Préparation des données
     const formData = new FormData(articleForm);
 
-    // Debug des données avant envoi
-    for (let [key, value] of formData.entries()) {
-      console.log(
-        `${key}:`,
-        value instanceof File ? `File (${value.size} bytes)` : value
-      );
-    }
-
     // Conversion des tags en tableau
     const tags = formData
       .get("tags")
@@ -69,31 +61,24 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.set("tags", JSON.stringify(tags));
 
     try {
-      console.log("Envoi vers:", `${API_URL}/articles`);
+      // Construction d'un objet avec les données pour la requête
+      const articleData = {};
+      articleData.title = formData.get("title");
+      articleData.content = formData.get("content");
+      articleData.introduction = formData.get("introduction") || "";
+      articleData.tags = formData.get("tags");
 
-      // Debug de la taille des données
-      // let totalSize = 0;
-      // for (let pair of formData.entries()) {
-      //   console.log("Champ:", pair[0]);
-      //   if (pair[1] instanceof File) {
-      //     console.log("- Type:", pair[1].type);
-      //     console.log("- Taille:", pair[1].size, "bytes");
-      //     totalSize += pair[1].size;
-      //   } else {
-      //     console.log("- Valeur:", pair[1]);
-      //     totalSize += new Blob([pair[1]]).size;
-      //   }
-      // }
-      // console.log("Taille totale de la requête:", totalSize, "bytes");
+      console.log("Données de l'article à envoyer:", articleData);
+      console.log("Envoi de l'article vers:", `${API_URL}/articles`);
 
       const result = await fetchData({
         route: "/articles",
         api: API_URL,
         options: {
           method: "POST",
-          body: formData,
+          body: JSON.stringify(articleData),
           headers: {
-            // Ne pas définir Content-Type car il sera automatiquement défini avec le bon boundary pour multipart/form-data
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("JWTtoken")}`,
           },
         },
@@ -103,6 +88,41 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(
           result.error || "Erreur lors de la création de l'article"
         );
+      }
+
+      // Si une image a été sélectionnée, on l'envoie dans une seconde requête
+      const imageFile = formData.get("image");
+      if (imageFile && imageFile.size > 0) {
+        const imageData = new FormData();
+        imageData.append("image", imageFile);
+
+        console.log(
+          "Envoi de l'image vers:",
+          `${API_URL}/articles/${result.articleId}/image`
+        );
+
+        const imageResult = await fetchData({
+          route: `/articles/${result.articleId}/image`,
+          api: API_URL,
+          options: {
+            method: "POST",
+            body: imageData,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("JWTtoken")}`,
+            },
+          },
+        });
+
+        if (!imageResult.success) {
+          console.error(
+            "Erreur lors de l'upload de l'image:",
+            imageResult.error
+          );
+          message.textContent =
+            "Article créé avec succès, mais erreur lors de l'upload de l'image";
+          message.style.color = "orange";
+          return;
+        }
       }
 
       // Affichage du succès
