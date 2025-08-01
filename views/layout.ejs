@@ -76,5 +76,7 @@
     type="module"
     src="<%= process.env.SITE_URL %>/assets/js/createArticle.js"
   ></script>
+  <% } %> <% if (title == "Articles"){ %>
+  <script src="/assets/js/getAllArticle.js"></script>
   <% } %>
 </html>

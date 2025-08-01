@@ -1,3 +1,13 @@
+<input
+  type="hidden"
+  id="api-url"
+  value="<%= typeof API_URL !== 'undefined' ? API_URL : '' %>"
+/>
+<input
+  type="hidden"
+  id="api-img-url"
+  value="<%= typeof API_IMG_URL !== 'undefined' ? API_IMG_URL : '' %>"
+/>
 <div class="articles-container">
   <section class="articles-header">
     <h1>Les articles</h1>
@@ -29,65 +39,7 @@
   </section>
 
   <div class="articles-list">
-    <!-- Article Card -->
-    <article class="article-card">
-      <div class="article-image">
-        <img src="assets/images/gamepad.png" alt="Image de l'article" />
-      </div>
-      <div class="article-content">
-        <h3>Les nouveautés gaming</h3>
-        <div class="article-metadata">
-          <span class="article-date">20/05/2025</span>
-          <div class="article-tags">
-            <span class="tag">gaming</span>
-            <span class="tag">news</span>
-          </div>
-        </div>
-        <p class="article-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
-          risus.
-        </p>
-      </div>
-    </article>
-
-    <!-- Repeat similar article cards -->
-    <article class="article-card">
-      <div class="article-image">
-        <img src="assets/images/gamepad.png" alt="Image de l'article" />
-      </div>
-      <div class="article-content">
-        <h3>Top 10 des fps</h3>
-        <div class="article-metadata">
-          <span class="article-date">20/05/2025</span>
-          <div class="article-tags">
-            <span class="tag">fps</span>
-            <span class="tag">gaming</span>
-          </div>
-        </div>
-        <p class="article-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-      </div>
-    </article>
-
-    <article class="article-card">
-      <div class="article-image">
-        <img src="assets/images/gamepad.png" alt="Image de l'article" />
-      </div>
-      <div class="article-content">
-        <h3>L'optimisation des jeux</h3>
-        <div class="article-metadata">
-          <span class="article-date">20/05/2025</span>
-          <div class="article-tags">
-            <span class="tag">optimisation</span>
-            <span class="tag">tech</span>
-          </div>
-        </div>
-        <p class="article-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-      </div>
-    </article>
+    <!-- Les articles seront chargés dynamiquement ici -->
   </div>
 
   <div class="articles-pagination">

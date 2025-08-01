@@ -3,6 +3,7 @@ const router = express.Router();
 
 const globals = {
   API_URL: process.env.API_URL || "http://localhost:8000/api",
+  API_IMG_URL: process.env.API_IMG_URL || "http://localhost:8000",
 };
 
 router.get("/", (req, res) => {
