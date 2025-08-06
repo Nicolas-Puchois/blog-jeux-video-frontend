@@ -1,4 +1,11 @@
+// Abstracts
+@use "abstract/variables";
+@use "abstract/mixins";
+
+// Base
 @use "reset/reset";
 @use "global/global";
+
+// Layout
 @use "header/header";
 @use "footer/footer";

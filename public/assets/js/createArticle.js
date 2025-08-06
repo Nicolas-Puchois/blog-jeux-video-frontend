@@ -60,83 +60,68 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((tag) => tag.trim());
     formData.set("tags", JSON.stringify(tags));
 
+    // Vérifier si on est en mode édition
+    const urlParams = new URLSearchParams(window.location.search);
+    const editMode = urlParams.get("edit");
+
+    const url = editMode
+      ? `${API_URL}/articles/${editMode}`
+      : `${API_URL}/articles`;
+
     try {
-      // Construction d'un objet avec les données pour la requête
-      const articleData = {};
-      articleData.title = formData.get("title");
-      articleData.content = formData.get("content");
-      articleData.introduction = formData.get("introduction") || "";
-      articleData.tags = formData.get("tags");
-
-      console.log("Données de l'article à envoyer:", articleData);
-      console.log("Envoi de l'article vers:", `${API_URL}/articles`);
-
-      const result = await fetchData({
-        route: "/articles",
-        api: API_URL,
-        options: {
-          method: "POST",
-          body: JSON.stringify(articleData),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("JWTtoken")}`,
-          },
-        },
+      const response = await fetch(url, {
+        method: editMode ? "PUT" : "POST",
+        body: formData,
       });
 
-      if (!result.success) {
-        throw new Error(
-          result.error || "Erreur lors de la création de l'article"
-        );
-      }
+      if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
 
-      // Si une image a été sélectionnée, on l'envoie dans une seconde requête
-      const imageFile = formData.get("image");
-      if (imageFile && imageFile.size > 0) {
-        const imageData = new FormData();
-        imageData.append("image", imageFile);
-
-        console.log(
-          "Envoi de l'image vers:",
-          `${API_URL}/articles/${result.articleId}/image`
-        );
-
-        const imageResult = await fetchData({
-          route: `/articles/${result.articleId}/image`,
-          api: API_URL,
-          options: {
-            method: "POST",
-            body: imageData,
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("JWTtoken")}`,
-            },
-          },
-        });
-
-        if (!imageResult.success) {
-          console.error(
-            "Erreur lors de l'upload de l'image:",
-            imageResult.error
-          );
-          message.textContent =
-            "Article créé avec succès, mais erreur lors de l'upload de l'image";
-          message.style.color = "orange";
-          return;
-        }
-      }
-
-      // Affichage du succès
-      message.textContent = "Article créé avec succès !";
-      message.style.color = "green";
-
-      // Redirection vers la page des articles après 2 secondes
-      setTimeout(() => {
-        window.location.href = "/articles";
-      }, 2000);
+      // Redirection vers l'article
+      const data = await response.json();
+      window.location.href = `/article/${data.data.id_article}`;
     } catch (error) {
       console.error("Erreur:", error);
       message.textContent = error.message;
       message.style.color = "red";
     }
   });
+
+  // Vérifier si on est en mode édition
+  const urlParams = new URLSearchParams(window.location.search);
+  const editMode = urlParams.get("edit");
+
+  if (editMode) {
+    // Récupérer les données de l'article depuis sessionStorage
+    const articleData = JSON.parse(sessionStorage.getItem("articleToEdit"));
+    if (articleData) {
+      // Remplir le formulaire avec les données existantes
+      document.getElementById("title").value = articleData.title;
+      document.getElementById("introduction").value = articleData.introduction;
+      document.getElementById("content").value = articleData.content;
+
+      // Afficher l'image existante si présente
+      if (articleData.cover_image) {
+        document.getElementById(
+          "preview-image"
+        ).src = `${API_IMG_URL}${articleData.cover_image}`;
+      }
+
+      // Mettre à jour les tags si présents
+      if (articleData.tags) {
+        const tags = Array.isArray(articleData.tags)
+          ? articleData.tags
+          : JSON.parse(articleData.tags);
+        // Mettre à jour l'interface des tags
+        tags.forEach((tag) => addTag(tag));
+      }
+
+      // Modifier le titre de la page et le bouton de soumission
+      document.title = "Modifier l'article - InfoD0tGame";
+      document.querySelector('button[type="submit"]').textContent =
+        "Modifier l'article";
+    }
+
+    // Nettoyer sessionStorage après utilisation
+    sessionStorage.removeItem("articleToEdit");
+  }
 });

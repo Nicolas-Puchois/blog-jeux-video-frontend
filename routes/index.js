@@ -42,16 +42,19 @@ router.get("/login", (req, res) => {
   });
 });
 
-router.get("/article/create", (req, res) => {
+// Route pour créer ou modifier un article
+router.get("/create-article", (req, res) => {
   res.render("layout", {
-    title: "Créer un article",
+    title: req.query.edit ? "Modifier l'article" : "Créer un article",
     view: "pages/createArticle",
     ...globals,
   });
 });
 
 // Route pour afficher un article spécifique
-router.get("/article/:id", (req, res) => {
+router.get("/article/:slugOrId", (req, res) => {
+  // Extraire l'ID de l'article du slug (format: slug-id)
+  const id = req.params.slugOrId.split("-").pop();
   res.render("layout", {
     title: "Article",
     view: "pages/article",

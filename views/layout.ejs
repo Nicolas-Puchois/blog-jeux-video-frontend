@@ -32,10 +32,16 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/validateEmail/validateEmail.css"
     />
-    <% } %> <% if(title == "Créer un article"){ %>
+    <% } %> <% if(title == "Créer un article" || title == "Modifier l'article"){
+    %>
     <link
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/createArticles/createArticle.css"
+    />
+    <% } %> <% if(view.includes("article")){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/article/article.css"
     />
     <% } %>
 
@@ -71,12 +77,14 @@
     type="module"
     src="<%= process.env.SITE_URL %>/assets/js/role.js"
   ></script>
-  <% if(title == "Créer un article"){ %>
+  <% if(title == "Créer un article" || title == "Modifier l'article"){ %>
   <script
     type="module"
     src="<%= process.env.SITE_URL %>/assets/js/createArticle.js"
   ></script>
   <% } %> <% if (title == "Articles"){ %>
-  <script src="/assets/js/getAllArticle.js"></script>
+  <script src="<%= process.env.SITE_URL %>/assets/js/getAllArticle.js"></script>
+  <% } %> <% if (title == "Article"){ %>
+  <script src="<%= process.env.SITE_URL %>/assets/js/getArticle.js"></script>
   <% } %>
 </html>

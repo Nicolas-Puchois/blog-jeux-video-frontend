@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Fonction pour créer une carte d'article
   function createArticleCard(article) {
     return `
-        <article class="article-card">
+        <article class="article-card" onclick="window.location.href='/article/${
+          article.id
+        }'">
             <div class="article-image">
                 <img 
                   src="${

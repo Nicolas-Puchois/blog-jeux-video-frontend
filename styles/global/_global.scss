@@ -1,30 +1,123 @@
+@import "../abstract/variables";
+@import "../abstract/mixins";
+
 * {
-  line-height: 1.5;
-}
-*,
-p {
-  font-size: 1em;
-}
-h1 {
-  font-size: 2.2rem;
-}
-h2 {
-  font-size: 1.9rem;
-}
-h3,
-h4 {
-  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: var(--font-family-primary);
+  line-height: var(--line-height-base);
+  font-size: var(--font-size-base);
+}
+
+// Typographie
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: var(--line-height-heading);
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+h2 {
+  font-size: var(--font-size-h2);
+}
+h3 {
+  font-size: var(--font-size-h3);
+}
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+// Thèmes
 html[data-theme="light"] {
+  --bg-primary: var(--bg-primary-light);
+  --bg-secondary: var(--bg-secondary-light);
+  --text-primary: var(--text-primary-light);
+
   main {
-    background-color: #ffffff;
-    color: #1a1a1a;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
   }
 }
+
 html[data-theme="dark"] {
+  --bg-primary: var(--bg-primary-dark);
+  --bg-secondary: var(--bg-secondary-dark);
+  --text-primary: var(--text-primary-dark);
+
   main {
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+}
+
+// Classes utilitaires communes
+.btn {
+  @include button-base;
+
+  &--primary {
+    background-color: var(--accent-primary);
+    color: white;
+
+    &:hover {
+      background-color: var(--accent-secondary);
+      color: #1a1a1a;
+    }
+  }
+
+  &--secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--accent-secondary);
+      color: #1a1a1a;
+    }
+  }
+}
+
+.card {
+  @include card-base;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+
+  @include mobile {
+    padding: 0 var(--spacing-sm);
+  }
+}
+
+// Messages d'état
+.message {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-md);
+
+  &--error {
+    background-color: var(--error);
+    color: white;
+  }
+
+  &--success {
+    background-color: var(--success);
+    color: white;
   }
 }
