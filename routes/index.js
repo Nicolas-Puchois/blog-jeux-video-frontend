@@ -42,7 +42,7 @@ router.get("/login", (req, res) => {
   });
 });
 
-// Route pour créer ou modifier un article
+// Route pour créer/modifier un article
 router.get("/create-article", (req, res) => {
   res.render("layout", {
     title: req.query.edit ? "Modifier l'article" : "Créer un article",
@@ -52,9 +52,7 @@ router.get("/create-article", (req, res) => {
 });
 
 // Route pour afficher un article spécifique
-router.get("/article/:slugOrId", (req, res) => {
-  // Extraire l'ID de l'article du slug (format: slug-id)
-  const id = req.params.slugOrId.split("-").pop();
+router.get("/article/:id", (req, res) => {
   res.render("layout", {
     title: "Article",
     view: "pages/article",

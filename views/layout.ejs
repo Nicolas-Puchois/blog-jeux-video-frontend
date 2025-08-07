@@ -77,10 +77,15 @@
     type="module"
     src="<%= process.env.SITE_URL %>/assets/js/role.js"
   ></script>
-  <% if(title == "Créer un article" || title == "Modifier l'article"){ %>
+  <% if(title == "Créer un article"){ %>
   <script
     type="module"
     src="<%= process.env.SITE_URL %>/assets/js/createArticle.js"
+  ></script>
+  <% } %> <% if(title == "Modifier l'article"){ %>
+  <script
+    type="module"
+    src="<%= process.env.SITE_URL %>/assets/js/updateArticle.js"
   ></script>
   <% } %> <% if (title == "Articles"){ %>
   <script src="<%= process.env.SITE_URL %>/assets/js/getAllArticle.js"></script>

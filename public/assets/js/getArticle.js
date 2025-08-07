@@ -69,9 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Ajouter les gestionnaires d'événements pour les boutons
       const editButton = document.querySelector(".btn-edit");
       editButton.addEventListener("click", () => {
-        // Stocker les données de l'article dans sessionStorage
         sessionStorage.setItem("articleToEdit", JSON.stringify(article));
-        // Rediriger vers la page de création avec un paramètre edit
         window.location.href = `/create-article?edit=${article.id_article}`;
       });
     } catch (error) {
