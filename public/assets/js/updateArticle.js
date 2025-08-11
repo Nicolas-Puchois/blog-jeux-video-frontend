@@ -4,13 +4,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const articleForm = document.querySelector("#article-form");
   const message = document.querySelector("#form-message");
   const previewImage = document.querySelector("#preview-image");
+
+  // Vérification de la présence des éléments nécessaires
   const apiUrlInput = document.querySelector("#api-url");
   const apiImgUrlInput = document.querySelector("#api-img-url");
+
+  if (!apiUrlInput || !apiImgUrlInput) {
+    console.error("Éléments d'API manquants");
+    return;
+  }
+
   const API_URL = apiUrlInput.value;
   const API_IMG_URL = apiImgUrlInput.value;
 
   // Charger les données de l'article depuis sessionStorage
   const articleData = JSON.parse(sessionStorage.getItem("articleToEdit"));
+
+  if (!articleData) {
+    console.error("Données de l'article non trouvées");
+    // Rediriger vers la liste des articles
+    window.location.href = "/articles";
+    return;
+  }
 
   if (articleData) {
     // Remplir le formulaire avec les données existantes
@@ -32,6 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
         : JSON.parse(articleData.tags);
       tagsInput.value = tags.join(", ");
     }
+
+    // Gérer l'affichage des boutons
+    document.getElementById("create-button").style.display = "none";
+    document.getElementById("update-button").style.display = "block";
 
     // Mettre à jour le titre du formulaire
     document.querySelector(".form-title").textContent = "Modifier l'article";
@@ -56,8 +75,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Gestion de la soumission du formulaire
-  articleForm.addEventListener("submit", async (e) => {
+  // Supprimer le gestionnaire sur le formulaire et ne garder que celui du bouton
+  articleForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // Empêcher la soumission par défaut
+  });
+
+  // Gestion de la mise à jour
+  const updateButton = document.getElementById("update-button");
+  updateButton.addEventListener("click", async (e) => {
     e.preventDefault();
 
     // Réinitialisation des erreurs
@@ -81,52 +106,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      // 1. D'abord envoyer les données textuelles
       const formData = new FormData(articleForm);
       const imageFile = formData.get("image");
-      formData.delete("image"); // Retirer l'image des données
 
-      // Conversion des tags
-      const tags = formData
-        .get("tags")
-        .split(",")
-        .map((tag) => tag.trim());
-      formData.set("tags", JSON.stringify(tags));
+      // Récupérer le token
+      const token = localStorage.getItem("JWTtoken");
+      console.log("Token envoyé:", token); // Debug
 
-      // Récupérer le token depuis localStorage avec la bonne clé
-      const token = localStorage.getItem("JWTtoken"); // Changé de "token" à "JWTtoken"
       if (!token) {
         throw new Error("Vous devez être connecté pour modifier un article");
       }
 
+      // Préparer les données de l'article
+      const articleUpdateData = {
+        title: formData.get("title"),
+        introduction: formData.get("introduction"),
+        content: formData.get("content"),
+        tags: formData
+          .get("tags")
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      };
+
+      // 1. Mettre à jour le texte
       const response = await fetch(
         `${API_URL}/articles/${articleData.id_article}`,
         {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // Spécifier le type de contenu JSON
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            // Convertir l'objet en chaîne JSON
-            title: formData.get("title"),
-            introduction: formData.get("introduction"),
-            content: formData.get("content"),
-            tags: tags,
-          }),
+          body: JSON.stringify(articleUpdateData),
         }
       );
 
-      if (!response.ok) throw new Error("Erreur lors de la mise à jour");
-      const result = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Erreur lors de la mise à jour");
+      }
 
-      // 2. Si une image est présente, l'envoyer dans une deuxième requête
+      // 2. Si une nouvelle image est sélectionnée, l'uploader
       if (imageFile && imageFile.size > 0) {
         const imageFormData = new FormData();
         imageFormData.append("image", imageFile);
 
         const imageResponse = await fetch(
-          `${API_URL}/articles/${result.data.id_article}/image`,
+          `${API_URL}/articles/${articleData.id_article}/image`,
           {
             method: "POST",
             headers: {
@@ -141,9 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Redirection et nettoyage
-      window.location.href = `/article/${result.data.id_article}`;
+      // Nettoyage et redirection
       sessionStorage.removeItem("articleToEdit");
+      window.location.href = `/article/${articleData.id_article}`;
     } catch (error) {
       console.error("Erreur:", error);
       message.textContent = error.message;

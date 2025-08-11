@@ -8,6 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const apiUrlInput = document.querySelector("#api-url");
   const API_URL = apiUrlInput.value;
 
+  // Gérer l'affichage des boutons
+  document.getElementById("create-button").style.display = "block";
+  document.getElementById("update-button").style.display = "none";
+
+  document.querySelector(".form-title").textContent = "Créer un article";
+
   // Prévisualisation de l'image
   if (articleForm.querySelector('[name="image"]')) {
     articleForm

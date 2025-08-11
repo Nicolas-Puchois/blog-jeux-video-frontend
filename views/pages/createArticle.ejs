@@ -1,5 +1,6 @@
 <div class="create-article-container">
-  <h1>Créer un article</h1>
+  <!-- Modifié ici : ajout de la classe form-title -->
+  <h1 class="form-title">Créer un article</h1>
 
   <form
     id="article-form"
@@ -7,10 +8,11 @@
     method="POST"
     enctype="multipart/form-data"
   >
+    <input type="hidden" id="api-url" value="<%= process.env.API_URL %>" />
     <input
       type="hidden"
-      id="api-url"
-      value="<%= typeof API_URL !== 'undefined' ? API_URL : '' %>"
+      id="api-img-url"
+      value="<%= process.env.API_IMG_URL %>"
     />
 
     <div class="form-group">
@@ -76,7 +78,20 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn-submit">Publier l'article</button>
+      <!-- Bouton de création - visible uniquement en mode création -->
+      <button type="submit" class="btn-submit btn-create" id="create-button">
+        Publier l'article
+      </button>
+
+      <!-- Bouton de modification - visible uniquement en mode édition -->
+      <button
+        type="submit"
+        class="btn-submit btn-update"
+        id="update-button"
+        style="display: none"
+      >
+        Mettre à jour l'article
+      </button>
     </div>
 
     <div id="form-message" class="form-message"></div>
