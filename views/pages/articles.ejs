@@ -8,41 +8,62 @@
   id="api-img-url"
   value="<%= typeof API_IMG_URL !== 'undefined' ? API_IMG_URL : '' %>"
 />
-<div class="articles-container">
-  <section class="articles-header">
-    <h1>Les articles</h1>
-    <a href="/create-article" class="create-article-btn user-role author-only"
-      >Créer un article</a
-    >
-  </section>
+<main class="articles-page">
+  <header class="articles-header">
+    <h1>Articles & Actualités Gaming</h1>
+    <meta
+      name="description"
+      content="Explorez notre collection d'articles sur les jeux vidéo, eSport, tests et actualités gaming."
+    />
+  </header>
 
-  <section class="articles-filter">
-    <h2>Filtre</h2>
-    <div class="filter-options">
-      <div class="filter-group">
-        <label>Date de parution</label>
-        <input type="date" class="filter-date" value="2025/05/20" />
-      </div>
-      <div class="filter-group">
-        <label>Auteur</label>
-        <input type="text" class="filter-author" placeholder="John Doe" />
-      </div>
-      <div class="filter-group">
-        <label>Tags</label>
-        <input
-          type="text"
-          class="filter-tags"
-          placeholder="esport, publicité, ..."
-        />
-      </div>
-    </div>
-  </section>
+  <div class="articles-container">
+    <aside class="articles-filter">
+      <a
+        href="/create-article"
+        class="create-article-btn user-role author-only"
+        rel="nofollow"
+        >Créer un article</a
+      >
 
-  <div class="articles-list">
-    <!-- Les articles seront chargés dynamiquement ici -->
+      <div class="filter-container">
+        <h2>Filtres de recherche</h2>
+        <form class="filter-form" role="search">
+          <div class="filter-group">
+            <label for="date-filter">Date de publication</label>
+            <input
+              type="date"
+              id="date-filter"
+              name="date"
+              aria-label="Filtrer par date"
+            />
+          </div>
+
+          <div class="filter-group">
+            <label for="author-filter">Auteur</label>
+            <input
+              type="text"
+              id="author-filter"
+              name="author"
+              aria-label="Filtrer par auteur"
+            />
+          </div>
+
+          <div class="filter-group">
+            <label for="tags-filter">Tags</label>
+            <input
+              type="text"
+              id="tags-filter"
+              name="tags"
+              aria-label="Filtrer par tags"
+            />
+          </div>
+        </form>
+      </div>
+    </aside>
+
+    <section class="articles-list" aria-label="Liste des articles">
+      <!-- Articles générés dynamiquement -->
+    </section>
   </div>
-
-  <div class="articles-pagination">
-    <button class="voir-plus">Voir plus d'articles ...</button>
-  </div>
-</div>
+</main>

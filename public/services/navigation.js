@@ -16,11 +16,6 @@ export class NavigationManager {
       const isAdmin = user.roles && user.roles.includes("ROLE_ADMIN");
 
       // Mettre à jour le premier lien d'authentification
-      authLinksContainer.innerHTML = `<a href="/profil">${
-        isAdmin
-          ? '<i class="fa-solid fa-user-shield"></i>'
-          : '<i class="fa-solid fa-circle-user"></i>'
-      } Profil</a>`;
 
       // Transformer le conteneur d'inscription en lien de déconnexion
       registerLinkContainer.innerHTML =

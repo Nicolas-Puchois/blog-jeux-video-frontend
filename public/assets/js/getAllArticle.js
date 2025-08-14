@@ -35,13 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   onerror="console.error('Erreur de chargement:', this.src); this.style.display='none';"
                   onload="console.log('Image chargée:', this.src); this.parentElement.classList.add('loaded');"
                 />
-                <!-- Debug URL: ${
-                  article.cover_image
-                    ? `URL complète: ${API_IMG_URL}${article.cover_image}, 
-                       API_IMG_URL: ${API_IMG_URL}, 
-                       cover_image: ${article.cover_image}`
-                    : "No image"
-                } -->
             </div>
             <div class="article-content">
                 <h3>${article.title}</h3>
@@ -72,9 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </article>
 
-        <div class="articles-pagination">
-          <button class="voir-plus">Voir plus d'articles ...</button>
-        </div>
     `;
   }
 

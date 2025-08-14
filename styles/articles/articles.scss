@@ -1,191 +1,276 @@
+@import "../abstract/variables";
+@import "../abstract/mixins";
+
 .articles-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--spacing-xl);
+
+  @media (max-width: 1024px) {
+    display: block;
+    padding: var(--spacing-md);
+  }
 }
 
 .articles-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-
-  h1 {
-    font-size: 2rem;
-  }
-
-  .create-article-btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #005fcc;
-    border: none;
-    border-radius: 4px;
-    font-weight: 500;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #ffa500;
-    }
-  }
+  grid-column: 1 / -1;
 }
 
 .articles-filter {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  grid-column: 2;
+  grid-row: 2;
+  height: fit-content;
+  position: sticky;
+  top: var(--spacing-xl);
 
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+  @media (max-width: 1024px) {
+    position: static;
+    margin-bottom: var(--spacing-lg);
   }
 
-  .filter-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      label {
-        font-weight: 500;
-      }
-
-      input {
-        padding: 0.5rem;
-        border: 1px solid;
-        border-radius: 4px;
-        font-size: 1rem;
-
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-  }
-}
-
-.articles-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.article-card {
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .article-image {
+  .create-article-btn {
+    display: block;
     width: 100%;
-    /* Utiliser un ratio 16:9 pour une meilleure présentation */
-    height: 0;
-    padding-bottom: 56.25%; /* Ratio 16:9 */
-    overflow: hidden;
-    background-color: #f5f5f5;
-    position: relative;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    background-color: var(--accent-primary);
+    color: white;
+    text-align: left; // Aligné à gauche comme dans l'image
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    font-weight: bold;
+    transition: var(--transition-base);
+    border-left: 4px solid var(--accent-secondary); // Bordure gauche comme dans l'image
 
-    &::before {
-      content: "Chargement...";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #666;
-      z-index: 0;
-    }
-
-    img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain; /* Change to 'contain' to voir toute l'image */
-      object-position: center;
-      transition: opacity 0.3s ease;
-      background-color: #f5f5f5;
+    &:hover {
+      background-color: var(--accent-secondary);
+      transform: translateY(-2px);
     }
   }
 
-  .article-content {
-    padding: 1.5rem;
+  .filter-container {
+    background-color: var(--accent-primary);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    border-left: 4px solid var(--accent-secondary); // Même bordure que le bouton
 
-    h3 {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: var(--spacing-md);
+      color: white;
+      font-weight: bold;
     }
 
-    .article-metadata {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-
-      .article-date {
-        font-size: 0.9rem;
+    .filter-options {
+      @include desktop {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
       }
 
-      .article-tags {
-        display: flex;
-        gap: 0.5rem;
+      .filter-group {
+        background-color: transparent; // Enlever le fond bleu des groupes
+        padding: 0;
+        margin-bottom: var(--spacing-sm);
 
-        .tag {
-          padding: 0.25rem 0.75rem;
-          border-radius: 15px;
-          font-size: 0.8rem;
+        label {
+          display: block;
+          margin-bottom: var(--spacing-xs);
+          font-weight: bold;
+          color: white;
+        }
+
+        input {
+          width: 100%;
+          padding: var(--spacing-sm);
+          border: none;
+          border-radius: var(--border-radius-sm);
+          background-color: white;
+          color: var(--text-primary-light);
+
+          &::placeholder {
+            color: #666;
+          }
+
+          &:focus {
+            outline: 2px solid var(--accent-secondary);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Modification du style des cards pour qu'elles soient verticales sur desktop
+.articles-list {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+
+  @media (max-width: 1024px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .article-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .article-image {
+      width: 100%;
+      /* Utiliser un ratio 16:9 pour une meilleure présentation */
+      height: 0;
+      padding-bottom: 56.25%; /* Ratio 16:9 */
+      overflow: hidden;
+      background-color: #f5f5f5;
+      position: relative;
+
+      &::before {
+        content: "Chargement...";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #666;
+        z-index: 0;
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Change to 'contain' to voir toute l'image */
+        object-position: center;
+        transition: opacity 0.3s ease;
+        background-color: #f5f5f5;
+      }
+    }
+
+    .article-content {
+      padding: 1.5rem;
+
+      h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .article-metadata {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        .article-date {
+          font-size: 0.9rem;
+        }
+
+        .article-tags {
+          display: flex;
+          gap: 0.5rem;
+
+          .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+          }
+        }
+      }
+
+      .article-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+    }
+
+    @include desktop {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      max-width: 100%;
+
+      .article-image {
+        height: 200px;
+        padding-bottom: 0;
+
+        img {
+          position: relative;
         }
       }
     }
 
-    .article-description {
-      font-size: 0.95rem;
-      line-height: 1.5;
+    @media (max-width: 1024px) {
+      display: block;
+
+      .article-image {
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%;
+      }
     }
   }
 }
 
 .articles-pagination {
-  text-align: center;
-  margin-top: 2rem;
+  grid-column: 1;
+  grid-row: 3;
+  @include flex-center;
+  margin-top: var(--spacing-xl);
 
-  .voir-plus {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s ease;
-
-    &:hover {
-      text-decoration: underline;
-    }
+  @media (max-width: 1024px) {
+    margin: var(--spacing-md) 0;
   }
 
-  & button {
-    margin-top: 2rem;
-    padding: 0.8rem 1.5rem;
-    background-color: #005fcc;
-    border-radius: 4px;
-    transition: background-color 0.5s ease;
+  .voir-plus {
+    @include button-base;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-base);
+    border-radius: var(--border-radius-md);
+    margin: var(--spacing-lg) auto; // Ajout de margin auto
 
     &:hover {
-      background-color: #ffa500;
+      background-color: var(--accent-secondary);
+      transform: translateY(-2px);
     }
+  }
+}
+
+.filter-options {
+  @media (max-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}
+
+// Sur mobile, retour à la mise en page verticale standard
+@include mobile {
+  .articles-container {
+    display: block;
+    padding: var(--spacing-md);
+  }
+
+  .articles-filter {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .articles-list {
+    margin-bottom: var(--spacing-lg);
   }
 }

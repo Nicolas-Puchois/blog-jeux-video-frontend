@@ -1,0 +1,112 @@
+<main class="contact-page">
+  <!-- Section À propos -->
+  <section id="a-propos" aria-labelledby="about-title">
+    <h1 id="about-title">À Propos du Blog Gaming</h1>
+    <article class="about-content">
+      <meta
+        name="description"
+        content="Découvrez notre blog dédié aux jeux vidéo et à l'actualité gaming"
+      />
+      <p>
+        Lorem ipsum dolor sit amet consectetur. At eros in aliquam feugiat amet
+        eu. Sollicitudin risus erat potenti odio iaculis adipiscing. Elementum
+        lacus eget elementum id iaculis sem. Habitant sed nunc purus nunc
+        ultricies sit quam maecenas.
+      </p>
+    </article>
+  </section>
+
+  <!-- Section Contact -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="contact-container">
+      <h2 id="contact-title">Contactez-nous</h2>
+
+      <div class="contact-content">
+        <!-- Formulaire -->
+        <div class="contact-form-wrapper">
+          <h3>Par email</h3>
+          <form class="contact-form" action="/contact" method="POST">
+            <div class="form-group">
+              <label for="issuer-name">Votre Nom</label>
+              <input
+                type="text"
+                id="issuer-name"
+                name="name"
+                required
+                aria-required="true"
+                placeholder="John Doe"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="issuer-mail">Votre Email</label>
+              <input
+                type="email"
+                id="issuer-mail"
+                name="email"
+                required
+                aria-required="true"
+                placeholder="exemple@email.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="issuer-object">Objet du message</label>
+              <input
+                type="text"
+                id="issuer-object"
+                name="object"
+                required
+                aria-required="true"
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="issuer-message">Votre Message</label>
+              <textarea
+                id="issuer-message"
+                name="message"
+                required
+                aria-required="true"
+                rows="5"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Envoyer le message</button>
+          </form>
+        </div>
+
+        <!-- Réseaux sociaux -->
+        <aside class="social-networks">
+          <h3>Suivez-nous sur les réseaux</h3>
+          <nav class="social-links" aria-label="Réseaux sociaux">
+            <a
+              href="#"
+              aria-label="Suivez-nous sur Twitter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i class="fab fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a
+              href="#"
+              aria-label="Rejoignez notre Discord"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i class="fab fa-discord" aria-hidden="true"></i>
+            </a>
+            <a
+              href="#"
+              aria-label="Suivez-nous sur LinkedIn"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i class="fab fa-linkedin" aria-hidden="true"></i>
+            </a>
+          </nav>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>

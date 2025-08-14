@@ -42,6 +42,14 @@ router.get("/login", (req, res) => {
   });
 });
 
+router.get("/contact", (req, res) => {
+  res.render("layout", {
+    title: "A Propos/Contact",
+    view: "pages/contact",
+    ...globals,
+  });
+});
+
 // Route pour créer/modifier un article
 router.get("/create-article", (req, res) => {
   res.render("layout", {

@@ -43,8 +43,12 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/article/article.css"
     />
+    <% } %> <% if(title === "A Propos/Contact"){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/contact/contact.css"
+    />
     <% } %>
-
     <title><%= title || "InfoD0tGame" %></title>
   </head>
 
