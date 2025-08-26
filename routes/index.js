@@ -50,6 +50,14 @@ router.get("/contact", (req, res) => {
   });
 });
 
+router.get("/critiques", (req, res) => {
+  res.render("layout", {
+    title: "les critiques",
+    view: "pages/critiques",
+    ...globals,
+  });
+});
+
 // Route pour créer/modifier un article
 router.get("/create-article", (req, res) => {
   res.render("layout", {

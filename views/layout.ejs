@@ -48,6 +48,11 @@
       rel="stylesheet"
       href="<%= process.env.SITE_URL %>/assets/styles/contact/contact.css"
     />
+    <% } %> <% if(title === "les critiques"){ %>
+    <link
+      rel="stylesheet"
+      href="<%= process.env.SITE_URL %>/assets/styles/critiques/critiques.css"
+    />
     <% } %>
     <title><%= title || "InfoD0tGame" %></title>
   </head>
@@ -98,4 +103,5 @@
   <% } %> <% if (title == "Article"){ %>
   <script src="<%= process.env.SITE_URL %>/assets/js/deleteArticle.js"></script>
   <% } %>
+  <script src="<%= process.env.SITE_URL %>/assets/js/burgerMenu.js"></script>
 </html>
