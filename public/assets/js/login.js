@@ -1,6 +1,8 @@
 import { fetchData } from "../../lib/fetchData.js";
 import { validateForm } from "../../services/validate.js";
 import { AuthManager } from "../../services/auth.js";
+import { NavigationManager } from "../../services/navigation.js";
+import { onRecaptchaSubmit } from "../../services/recaptcha.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.querySelector("#login-form");
@@ -54,8 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("JWTtoken", result.token);
       localStorage.setItem("user", JSON.stringify(result.user));
       localStorage.setItem("showNotification", "Connexion réussie !");
-
-      // Mise à jour de l'interface
+      console.log(NavigationManager);
+      // Mise à jour de l'interface du header
+      NavigationManager.updateAuthLinks();
 
       // Redirection
       const params = new URLSearchParams(window.location.search);

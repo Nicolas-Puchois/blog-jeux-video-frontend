@@ -1,33 +1,106 @@
-<nav class="navbar">
-  <div class="container">
-    <button class="toggle">&#9776;</button>
-    <ul class="nav-links">
-      <li>
-        <a href="/"><i class="fas fa-home"></i> Accueil</a>
-      </li>
-      <li>
-        <a href="/articles"><i class="fas fa-newspaper"></i> Articles</a>
-      </li>
-      <li>
-        <a href="/critiques"><i class="fas fa-star"></i> Critiques</a>
-      </li>
-      <!-- Les liens d'authentification seront insérés ici dynamiquement -->
-      <li id="auth-links-container">
-        <a href="/login"
-          ><i class="fas fa-right-to-bracket"></i> Se Connecter</a
-        >
-      </li>
-      <li id="register-link-container">
-        <a href="/register"><i class="fas fa-user-plus"></i> S&apos;inscrire</a>
-      </li>
-      <li id="register-link-container">
-        <a href="Contact"><i class="fas fa-envelope"></i> A Propos / Contact</a>
-      </li>
-      <li>
-        <div id="toggle-dark-mode">
-          <i class="fas fa-moon" data-theme-toggler></i>
-        </div>
-      </li>
-    </ul>
-  </div>
-</nav>
+<script type="module">
+  import { NavigationManager } from "/services/navigation.js";
+  NavigationManager.init();
+</script>
+<header role="banner">
+  <nav class="navbar" role="navigation" aria-label="Menu principal">
+    <div class="container">
+      <button
+        class="toggle"
+        aria-label="Menu toggle"
+        aria-expanded="false"
+        aria-controls="main-menu"
+      >
+        <span class="sr-only">Menu</span>
+        &#9776;
+      </button>
+
+      <ul class="nav-links" id="main-menu" role="menubar">
+        <li role="none">
+          <a
+            href="/"
+            role="menuitem"
+            aria-current="<%= locals.currentPage === 'home' ? 'page' : false %>"
+          >
+            <i class="fas fa-home" aria-hidden="true"></i>
+            <span>Accueil</span>
+          </a>
+        </li>
+
+        <li role="none">
+          <a
+            href="/articles"
+            role="menuitem"
+            aria-current="<%= locals.currentPage === 'articles' ? 'page' : false %>"
+          >
+            <i class="fas fa-newspaper" aria-hidden="true"></i>
+            <span>Articles</span>
+          </a>
+        </li>
+
+        <li role="none">
+          <a
+            href="/critiques"
+            role="menuitem"
+            aria-current="<%= locals.currentPage === 'critiques' ? 'page' : false %>"
+          >
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span>Critiques</span>
+          </a>
+        </li>
+
+        <!-- Zone d'authentification -->
+        <li role="none" id="auth-links-container">
+          <a
+            href="/login"
+            role="menuitem"
+            aria-current="<%= locals.currentPage === 'login' ? 'page' : false %>"
+          >
+            <i class="fas fa-right-to-bracket" aria-hidden="true"></i>
+            <span>Se Connecter</span>
+          </a>
+        </li>
+
+        <li role="none" id="register-link-container">
+          <a
+            href="/register"
+            role="menuitem"
+            aria-current="<%= locals.currentPage === 'register' ? 'page' : false %>"
+          >
+            <i class="fas fa-user-plus" aria-hidden="true"></i>
+            <span>S'inscrire</span>
+          </a>
+        </li>
+
+        <li role="none">
+          <a
+            href="/contact"
+            role="menuitem"
+            aria-current="<%= locals.currentPage === 'contact' ? 'page' : false %>"
+          >
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <span>À Propos / Contact</span>
+          </a>
+        </li>
+
+        <li role="none">
+          <button
+            id="toggle-dark-mode"
+            role="switch"
+            aria-label="Basculer le thème sombre"
+            aria-pressed="false"
+          >
+            <i class="fas fa-moon" data-theme-toggler aria-hidden="true"></i>
+            <span class="sr-only">Changer de thème</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- Script d'initialisation de la navigation -->
+<script type="module">
+  import { NavigationManager } from "/services/navigation.js";
+  NavigationManager.init();
+</script>

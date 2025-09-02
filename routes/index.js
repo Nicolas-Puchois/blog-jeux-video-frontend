@@ -4,6 +4,7 @@ const router = express.Router();
 const globals = {
   API_URL: process.env.API_URL || "http://localhost:8000/api",
   API_IMG_URL: process.env.API_IMG_URL || "http://localhost:8000",
+  RECAPTCHA_PUBLIC_KEY: process.env.RECAPTCHA_PUBLIC_KEY,
 };
 
 router.get("/", (req, res) => {

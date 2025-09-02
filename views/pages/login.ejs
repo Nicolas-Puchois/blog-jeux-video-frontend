@@ -1,7 +1,7 @@
 <section class="form-container">
   <h1>Se Connecter</h1>
 
-  <form id="login-form" method="POST" action="">
+  <form id="login-form" method="POST" action="" class="form">
     <input
       type="hidden"
       id="api-url"
@@ -34,6 +34,14 @@
 
     <div id="verify-msg"></div>
 
-    <button type="submit" class="btn">Se Connecter</button>
+    <button
+      type="submit"
+      class="g-recaptcha btn"
+      data-sitekey="<%= RECAPTCHA_PUBLIC_KEY %>"
+      data-callback="onRecaptchaSubmit"
+      data-action="login"
+    >
+      Se Connecter
+    </button>
   </form>
 </section>
