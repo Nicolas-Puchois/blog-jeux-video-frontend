@@ -20,7 +20,9 @@ export class NavigationManager {
       // Transformer le conteneur d'inscription en lien de déconnexion
       registerLinkContainer.innerHTML =
         '<a href="#" id="logout-btn"><i class="fas fa-plug-circle-xmark"></i> Se Déconnecter</a>';
-
+      // Transformer le conteneur de connexion en profil
+      authLinksContainer.innerHTML =
+        '<a href="#" id="profil-btn"><i class="fas fa-user"></i> Profil </a>';
       // Ajouter le lien Dashboard entre les deux si admin
       if (isAdmin) {
         const existingDashboard = document.querySelector(".dashboard-link");
