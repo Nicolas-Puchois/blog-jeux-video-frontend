@@ -21,8 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadArticle() {
     try {
       const url = `${API_URL}/articles/id/${articleId}`;
+      console.log("Tentative de récupération de l'article à:", url);
+
       const response = await fetch(url);
-      if (!response.ok) throw new Error("Article non trouvé");
+      console.log("Statut de la réponse:", response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Erreur réponse:", errorText);
+        throw new Error(
+          `Article non trouvé (${response.status}): ${errorText}`
+        );
+      }
 
       const jsonResponse = await response.json();
       if (!jsonResponse.success || !jsonResponse.data) {
@@ -73,7 +83,17 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = `/create-article?edit=${article.id_article}`;
       });
     } catch (error) {
-      // Gérer l'erreur (redirection ou message)
+      console.error("Erreur lors du chargement de l'article:", error);
+      // Afficher l'erreur à l'utilisateur
+      const contentElement = document.getElementById("article-content");
+      if (contentElement) {
+        contentElement.innerHTML = `
+          <div class="error-message">
+            <h2>Erreur lors du chargement de l'article</h2>
+            <p>${error.message}</p>
+          </div>
+        `;
+      }
     }
   }
 
