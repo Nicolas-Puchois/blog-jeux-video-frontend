@@ -1,24 +1,22 @@
-@use "../abstract/varaible" as *;
+@use "../abstract/variables" as *;
 
 .verify {
-  padding: $spacing-xl;
+  padding: var(--spacing-xl);
 
   .message-container {
     max-width: 400px;
     margin: auto;
-
     border: 1px solid;
-
     text-align: center;
   }
 
   #login-link {
     a {
-      color: #005fcc;
+      color: var(--accent-primary);
       display: block;
 
       &:hover {
-        color: #ffa500;
+        color: var(--accent-secondary);
       }
     }
   }
