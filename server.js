@@ -36,6 +36,12 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  // Utilise une clé statique depuis .env
+  res.locals.csrf_token = process.env.CSRF_SECRET;
+  next();
+});
+
 // configuration des assets static => /public
 app.use(express.static(path.join(__dirname__, "public")));
 // import du routeur

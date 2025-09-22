@@ -2,6 +2,7 @@
   <h1>Se Connecter</h1>
 
   <form id="login-form" method="POST" action="" class="form">
+    <input type="hidden" name="csrf_token" value="<%= csrf_token %>" />
     <input
       type="hidden"
       id="api-url"

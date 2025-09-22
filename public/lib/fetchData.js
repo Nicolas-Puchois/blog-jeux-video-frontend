@@ -2,16 +2,25 @@
  * Utilitaire pour gérer les appels API
  */ // Ajouter le token JWT si présent
 //SAUVEGARDE Peut etre réutiliser dans tous les projets
-export async function fetchData({ route, api, options = {} }) {
-  const token = localStorage.getItem("JWTtoken");
-  const headers = {
-    Accept: "application/json",
-    // Si ce n'est pas un FormData, ajouter Content-Type: application/json
-    ...(!(options.body instanceof FormData) && {
+export const fetchData = async ({ route, api, options = {} }) => {
+  const tokenInput = document.querySelector('input[name="csrf_token"]');
+  const csrfToken = tokenInput ? tokenInput.value : null;
+
+  const defaultOptions = {
+    headers: {
       "Content-Type": "application/json",
-    }),
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...(options.headers || {}),
+      "X-CSRF-Token": csrfToken,
+    },
+    credentials: "include",
+  };
+
+  const finalOptions = {
+    ...defaultOptions,
+    ...options,
+    headers: {
+      ...defaultOptions.headers,
+      ...options.headers,
+    },
   };
 
   // Construire la query string si des paramètres sont présents
@@ -23,14 +32,11 @@ export async function fetchData({ route, api, options = {} }) {
 
   // Debug de la requête
   console.log("URL complète:", `${api}${route}${queryString}`);
-  console.log("Headers:", headers);
-  console.log("Options:", options);
+  console.log("Headers:", finalOptions.headers);
+  console.log("Options:", finalOptions);
 
   // Effectuer la requête
-  const result = await fetch(`${api}${route}${queryString}`, {
-    ...options,
-    headers,
-  });
+  const result = await fetch(`${api}${route}${queryString}`, finalOptions);
 
   // Debug de la réponse
   console.log("Status:", result.status);
@@ -55,4 +61,4 @@ export async function fetchData({ route, api, options = {} }) {
   }
 
   throw new Error(jsonData.error || "Erreur serveur");
-}
+};

@@ -1,7 +1,8 @@
 <section class="form-container">
   <h1>S'enregistrer</h1>
 
-  <form id="register-form" method="POST" action="">
+  <form id="register-form" method="POST" action="" class="form">
+    <input type="hidden" name="csrf_token" value="<%= csrf_token %>" />
     <input
       type="hidden"
       id="api-url"
@@ -50,6 +51,14 @@
       <span class="error" data-error="repeat-password"></span>
     </div>
     <div id="verify-msg"></div>
-    <button type="submit" class="btn">S'inscrire</button>
+    <button
+      type="submit"
+      class="g-recaptcha btn"
+      data-sitekey="<%= RECAPTCHA_PUBLIC_KEY %>"
+      data-callback="onRecaptchaSubmit"
+      data-action="login"
+    >
+      S'enregistrer
+    </button>
   </form>
 </section>
