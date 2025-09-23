@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const previewImage = document.querySelector("#preview-image");
   const apiUrlInput = document.querySelector("#api-url");
   const API_URL = apiUrlInput.value;
-
+  let imageFile = null;
   // Gérer l'affichage des boutons
   document.getElementById("create-button").style.display = "block";
   document.getElementById("update-button").style.display = "none";
@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .querySelector('[name="image"]')
       .addEventListener("change", (e) => {
         const file = e.target.files[0];
+        imageFile = file; // Stocker le fichier sélectionné
         // Vérifier la taille du fichier (10MB max)
         const maxSize = 10 * 1024 * 1024; // 10MB en octets
         if (file.size > maxSize) {
@@ -47,55 +48,40 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     try {
-      // Récupérer le token depuis localStorage
       const token = localStorage.getItem("JWTtoken");
-      if (!token) {
-        throw new Error("Vous devez être connecté pour créer un article");
-      }
+      const csrfToken = document.querySelector(
+        'input[name="csrf_token"]'
+      ).value;
 
-      // 1. D'abord envoyer les données textuelles
+      console.log("CSRF Token:", csrfToken); // Debug
+
       const formData = new FormData(articleForm);
-      const imageFile = formData.get("image");
-      formData.delete("image");
+      const jsonData = {};
+      formData.forEach((value, key) => {
+        if (key !== "image") {
+          jsonData[key] = value;
+        }
+      });
 
-      const tags = formData
-        .get("tags")
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag); // Filtrer les tags vides
-
-      // Préparer les données de l'article
-      const articleData = {
-        title: formData.get("title"),
-        introduction: formData.get("introduction"),
-        content: formData.get("content"),
-        tags: tags,
-      };
-
-      // Envoi des données textuelles avec le token
+      // Envoi des données de l'article
       const response = await fetch(`${API_URL}/articles`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
+          "X-CSRF-Token": csrfToken,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title: articleData.title,
-          introduction: articleData.introduction,
-          content: articleData.content,
-          tags: articleData.tags,
-        }),
+        body: JSON.stringify(jsonData),
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Erreur lors de la création");
+        throw new Error("Erreur lors de la création de l'article");
       }
 
       const result = await response.json();
 
-      // 2. Si une image est présente, l'envoyer avec le token également
-      if (imageFile && imageFile.size > 0) {
+      // Si une image est présente, l'envoyer dans une requête séparée
+      if (imageFile) {
         const imageFormData = new FormData();
         imageFormData.append("image", imageFile);
 

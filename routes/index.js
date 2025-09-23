@@ -5,6 +5,7 @@ const globals = {
   API_URL: process.env.API_URL || "http://localhost:8000/api",
   API_IMG_URL: process.env.API_IMG_URL || "http://localhost:8000",
   RECAPTCHA_PUBLIC_KEY: process.env.RECAPTCHA_PUBLIC_KEY,
+  csrf_token: process.env.CSRF_TOKEN,
 };
 
 router.get("/", (req, res) => {
@@ -62,7 +63,7 @@ router.get("/critiques", (req, res) => {
 // Route pour créer/modifier un article
 router.get("/create-article", (req, res) => {
   res.render("layout", {
-    title: req.query.edit ? "Modifier l'article" : "Créer un article",
+    title: "Créer un article",
     view: "pages/createArticle",
     ...globals,
   });

@@ -2,7 +2,11 @@
   <h1>S'enregistrer</h1>
 
   <form id="register-form" method="POST" action="" class="form">
-    <input type="hidden" name="csrf_token" value="<%= csrf_token %>" />
+    <input
+      type="hidden"
+      name="csrf_token"
+      value="<%= process.env.CSRF_TOKEN %>"
+    />
     <input
       type="hidden"
       id="api-url"
