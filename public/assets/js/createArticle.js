@@ -48,20 +48,46 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     try {
+      // Validation du formulaire
+      const { valid, errors } = validateArticleForm(articleForm);
+
+      // Effacer les messages d'erreur précédents
+      articleForm
+        .querySelectorAll(".error")
+        .forEach((error) => (error.textContent = ""));
+
+      // Si le formulaire n'est pas valide, afficher les erreurs
+      if (!valid) {
+        Object.keys(errors).forEach((field) => {
+          const errorSpan = articleForm.querySelector(
+            `[data-error="${field}"]`
+          );
+          if (errorSpan) {
+            errorSpan.textContent = errors[field];
+            errorSpan.style.color = "red";
+          }
+        });
+        return; // Arrêter l'envoi si le formulaire n'est pas valide
+      }
+
       const token = localStorage.getItem("JWTtoken");
       const csrfToken = document.querySelector(
         'input[name="csrf_token"]'
       ).value;
 
-      console.log("CSRF Token:", csrfToken); // Debug
-
+      // Récupérer toutes les données du formulaire
       const formData = new FormData(articleForm);
-      const jsonData = {};
-      formData.forEach((value, key) => {
-        if (key !== "image") {
-          jsonData[key] = value;
-        }
-      });
+      const jsonData = {
+        title: formData.get("title"),
+        content: formData.get("content"),
+        introduction: formData.get("introduction"),
+        tags: formData
+          .get("tags")
+          .split(",")
+          .map((tag) => tag.trim()), // Convertir la chaîne de tags en tableau
+      };
+
+      console.log("Données envoyées:", jsonData); // Debug
 
       // Envoi des données de l'article
       const response = await fetch(`${API_URL}/articles`, {
@@ -75,30 +101,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!response.ok) {
-        throw new Error("Erreur lors de la création de l'article");
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || "Erreur lors de la création de l'article"
+        );
       }
 
       const result = await response.json();
 
-      // Si une image est présente, l'envoyer dans une requête séparée
+      // Upload de l'image si présente
       if (imageFile) {
-        const imageFormData = new FormData();
-        imageFormData.append("image", imageFile);
-
-        const imageResponse = await fetch(
-          `${API_URL}/articles/${result.data.id_article}/image`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: imageFormData,
-          }
-        );
-
-        if (!imageResponse.ok) {
-          throw new Error("Erreur lors de l'upload de l'image");
-        }
+        await uploadImage(result.data.id_article, imageFile);
       }
 
       // Redirection vers l'article créé
@@ -109,4 +122,27 @@ document.addEventListener("DOMContentLoaded", () => {
       message.style.color = "red";
     }
   });
+
+  async function uploadImage(articleId, imageFile) {
+    const token = localStorage.getItem("JWTtoken");
+    const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    const response = await fetch(`${API_URL}/articles/${articleId}/image`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-CSRF-Token": csrfToken,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de l'upload de l'image");
+    }
+
+    return response.json();
+  }
 });

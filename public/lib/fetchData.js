@@ -3,15 +3,15 @@
  */ // Ajouter le token JWT si présent
 //SAUVEGARDE Peut etre réutiliser dans tous les projets
 export const fetchData = async ({ route, api, options = {} }) => {
-  const tokenInput = document.querySelector('input[name="csrf_token"]');
-  const csrfToken = tokenInput ? tokenInput.value : null;
+  const token = localStorage.getItem("JWTtoken");
+  const csrfToken = document.querySelector('input[name="csrf_token"]').value;
 
   const defaultOptions = {
     headers: {
       "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
       "X-CSRF-Token": csrfToken,
     },
-    credentials: "include",
   };
 
   const finalOptions = {

@@ -129,6 +129,29 @@ document.addEventListener("DOMContentLoaded", () => {
           .filter(Boolean),
       };
 
+      async function updateArticle(articleId, articleData) {
+        const token = localStorage.getItem("JWTtoken");
+        const csrfToken = document.querySelector(
+          'input[name="csrf_token"]'
+        ).value;
+
+        const response = await fetch(`${API_URL}/articles/${articleId}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": csrfToken,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(articleData),
+        });
+
+        if (!response.ok) {
+          throw new Error("Erreur lors de la modification de l'article");
+        }
+
+        return response.json();
+      }
+
       // 1. Mettre à jour le texte
       const response = await fetch(
         `${API_URL}/articles/${articleData.id_article}`,
