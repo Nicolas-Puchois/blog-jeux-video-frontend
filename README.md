@@ -2,13 +2,18 @@
 
 ## Description
 
-Interface utilisateur du blog de jeux vidéo, développée avec Node.js, Express et EJS.
+Interface utilisateur du blog de jeux vidéo développée avec Node.js, Express et EJS. Application responsive permettant la gestion des articles et l'authentification des utilisateurs.
 
 ## Prérequis
 
-- Node.js 16.0 ou supérieur
+- Node.js 16.0+
 - npm ou yarn
 - Backend API en cours d'exécution
+- Extensions recommandées VS Code :
+  - EJS language support
+  - SCSS Formatter
+  - ESLint
+  - Prettier
 
 ## Installation
 
@@ -27,25 +32,25 @@ npm install
 yarn install
 ```
 
-3. Configurer l'environnement
+3. Configuration de l'environnement
 
 - Copier `.env.example` vers `.env`
-- Modifier les variables :
-  ```
-  PORT=3000
-  API_URL=http://localhost:8000/api
-  API_IMG_URL=http://localhost:8000
-  RECAPTCHA_PUBLIC_KEY=votre_clé_recaptcha_publique
-  ```
+- Configurer les variables :
 
-4. Lancer le serveur de développement
+```properties
+PORT=3000
+API_URL=http://localhost:8000/api
+API_IMG_URL=http://localhost:8000
+RECAPTCHA_PUBLIC_KEY=votre_clé_recaptcha
+CSRF_TOKEN=votre_token_csrf
+```
+
+4. Démarrer le serveur
 
 ```bash
 npm run dev
 # ou
 yarn dev
-# ou
-npm start
 ```
 
 ## Structure du Projet
@@ -53,113 +58,128 @@ npm start
 ```
 project/
 ├── public/            # Fichiers statiques
-│   ├── assets/       # JavaScript et CSS compilés
-│   ├── lib/          # Bibliothèques utilitaires
+│   ├── assets/       # JS et CSS compilés
+│   ├── lib/          # Utilitaires
 │   └── services/     # Services frontend
 ├── routes/           # Routes Express
-├── styles/           # Fichiers SCSS source
-│   ├── abstract/     # Mixins et variables
-│   ├── components/   # Styles des composants
-│   └── pages/        # Styles des pages
+├── styles/           # Sources SCSS
+│   ├── abstract/     # Mixins, variables
+│   └── pages/        # Styles par page
 └── views/            # Templates EJS
-    ├── components/   # Composants réutilisables
-    └── pages/        # Pages de l'application
+    ├── components/   # Composants
+    └── pages/        # Pages
 ```
 
-## Fonctionnalités
+## Points d'API Utilisés
 
-### Utilisateurs
+### Authentification
 
-- Inscription
-- Connexion
-- Validation d'email
-- Gestion du profil
+- `POST /api/register` - Inscription
+- `POST /api/login` - Connexion
+- `GET /api/valider-email` - Validation email
 
 ### Articles
 
-- Liste des articles
-- Création d'article
-- Modification d'article
-- Suppression d'article
-- Upload d'images
+- `GET /api/articles` - Liste articles
+- `GET /api/articles/{id}` - Détail article
+- `POST /api/articles` - Création
+- `PUT /api/articles/{id}` - Modification
+- `DELETE /api/articles/{id}` - Suppression
+- `POST /api/articles/{id}/image` - Upload image
 
-### Interface
-
-- Design responsive
-- Navigation mobile
-- Validation des formulaires côté client
-- Notifications interactives
-- Protection reCAPTCHA
-
-## Scripts npm
+## Scripts Disponibles
 
 ```bash
-npm run dev      # Lance le serveur de développement
-npm run build    # Compile les assets
-npm run sass     # Compile les fichiers SCSS
-npm run watch    # Watch mode pour SCSS
+npm run dev          # Serveur développement
+npm run sass         # Compile SCSS
+npm run sass:watch   # Watch mode SCSS
+npm run build        # Build production
 ```
 
 ## Styles (SCSS)
 
-- Architecture 7-1 pattern
-- Variables pour les couleurs et breakpoints
-- Mixins pour le responsive design
-- Styles modulaires par composant
+### Architecture
+
+- Pattern 7-1
+- BEM methodology
+- Variables globales
+- Mixins responsive
+
+### Composants
+
+- Header/Footer
+- Navigation
+- Forms
+- Cards
+- Buttons
+- Notifications
+
+## Services Frontend
+
+### auth.js
+
+- Gestion JWT
+- Login/Logout
+- Vérification roles
+
+### formCreationValidate.js
+
+- Validation formulaires
+- Messages d'erreur
+- Sanitization inputs
+
+### notification.js
+
+- Système de notifications
+- Messages success/error
+- Animations
 
 ## Sécurité
 
 - Protection CSRF
 - Validation reCAPTCHA
-- Sanitization des entrées
-- Authentification JWT
+- JWT sécurisé
+- Sanitization inputs
 - Protection XSS
 
-## APIs Utilisées
+## Tests et Qualité
 
-- Backend API (articles, utilisateurs)
-- Google reCAPTCHA v2
-- Services de notification
+- ESLint configuration
+- Prettier
+- Validation W3C
+- Responsive testing
+- Cross-browser testing
 
-## Compatibilité Navigateurs
+## Navigateurs Supportés
 
-- Chrome (dernières 2 versions)
-- Firefox (dernières 2 versions)
-- Safari (dernières 2 versions)
-- Edge (dernières 2 versions)
+- Chrome (2 dernières versions)
+- Firefox (2 dernières versions)
+- Safari (2 dernières versions)
+- Edge (2 dernières versions)
 
-## Développement
+## Maintenance
 
 ### Compilation SCSS
 
 ```bash
-# Installation unique des dépendances
-npm install -D sass
-
-# Compilation
 npm run sass
 ```
 
-### Ajout de nouvelles pages
+### Ajout Nouvelle Page
 
-1. Créer le template EJS dans `views/pages/`
-2. Ajouter la route dans `routes/index.js`
-3. Créer le fichier SCSS dans `styles/pages/`
-4. Ajouter le JavaScript dans `public/assets/js/`
+1. Template EJS (`views/pages/`)
+2. Route (`routes/index.js`)
+3. Style SCSS (`styles/pages/`)
+4. JavaScript (`public/assets/js/`)
 
-## Déploiement
-
-1. Configurer les variables d'environnement
-2. Compiler les assets
-3. Vérifier les permissions des dossiers
-4. Lancer avec PM2 ou similar
-
-## Contributions
+## Contribuer
 
 1. Fork le projet
-2. Créer une branche (`git checkout -b feature/ma-feature`)
-3. Commit les changements (`git commit -m 'Ajout de ma feature'`)
-4. Push sur la branche (`git push origin feature/ma-feature`)
-5. Créer une Pull Request
+2. Créer branche (`git checkout -b feature/ma-feature`)
+3. Commit (`git commit -m 'Description'`)
+4. Push (`git push origin feature/ma-feature`)
+5. Pull Request
 
 ## Licence
+
+MIT
