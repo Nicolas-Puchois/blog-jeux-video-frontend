@@ -69,6 +69,17 @@ router.get("/create-article", (req, res) => {
   });
 });
 
+// Remplacer la route /modifier-article par :
+router.get("/modifier-article/:id", (req, res) => {
+  res.render("layout", {
+    title: "Modifier l'article",
+    view: "pages/createArticle",
+    isEditing: true,
+    articleId: req.params.id,
+    ...globals,
+  });
+});
+
 // Route pour afficher un article spécifique
 router.get("/article/:id", (req, res) => {
   res.render("layout", {

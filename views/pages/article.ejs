@@ -1,5 +1,6 @@
 <input type="hidden" id="api-url" value="<%= process.env.API_URL %>" />
 <input type="hidden" id="api-img-url" value="<%= process.env.API_IMG_URL %>" />
+<input type="hidden" name="csrf_token" value="<%= process.env.CSRF_TOKEN %>" />
 
 <article class="article-page" itemscope itemtype="http://schema.org/Article">
   <div class="article-hero">
@@ -34,12 +35,12 @@
       <!-- Le contenu sera chargé ici -->
     </div>
 
-    <div class="article-actions user-role author-admin-only">
-      <button class="btn-edit">
+    <div class="article-actions" style="display: none">
+      <button class="btn btn-edit">
         <i class="fas fa-edit"></i>
         Modifier l'article
       </button>
-      <button class="btn-delete">
+      <button class="btn btn-delete">
         <i class="fas fa-trash-alt"></i>
         Supprimer l'article
       </button>

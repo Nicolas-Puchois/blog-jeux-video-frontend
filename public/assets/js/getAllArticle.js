@@ -18,53 +18,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fonction pour créer une carte d'article
   function createArticleCard(article) {
+    console.log("Création de la carte pour l'article:", article);
+
+    // Vérification des données nulles
+    const title = article.title || "Sans titre";
+    const introduction = article.introduction || "Pas d'introduction";
+    const coverImage = article.cover_image
+      ? `${API_IMG_URL}${article.cover_image}`
+      : "/assets/images/default.jpg";
+    const createdAt = article.created_at
+      ? formatDate(article.created_at)
+      : "Date inconnue";
+
     return `
-        <article class="article-card" onclick="window.location.href='/article/${
-          article.id
-        }'">
-            <div class="article-image">
-                <img 
-                  src="${
-                    article.cover_image
-                      ? `${API_IMG_URL}/uploads/articles/${article.cover_image
-                          .split("/")
-                          .pop()}`
-                      : "/assets/images/gamepad.png"
-                  }" 
-                  alt="Image de ${article.title}"
-                  onerror="console.error('Erreur de chargement:', this.src); this.style.display='none';"
-                  onload="console.log('Image chargée:', this.src); this.parentElement.classList.add('loaded');"
-                />
-            </div>
-            <div class="article-content">
-                <h3>${article.title}</h3>
-                <div class="article-metadata">
-                    <span class="article-date">${formatDate(
-                      article.created_at
-                    )}</span>
-                    <div class="article-tags">
-                        ${
-                          article.tags
-                            ? (Array.isArray(article.tags)
-                                ? article.tags
-                                : JSON.parse(article.tags)
-                              )
-                                .map(
-                                  (tag) =>
-                                    `<span class="tag">${tag.trim()}</span>`
-                                )
-                                .join("")
-                            : ""
-                        }
+        <a href="/article/${article.id}" class="article-card-link">
+            <article class="article-card">
+                <div class="article-image">
+                    <img src="${coverImage}" alt="${title}" onerror="this.src='/assets/images/default.jpg'"/>
+                </div>
+                <div class="article-content">
+                    <h2>${title}</h2>
+                    <p>${introduction}</p>
+                    <div class="article-footer">
+                        <span class="date">${createdAt}</span>
+                        <span class="read-more">Lire la suite →</span>
                     </div>
                 </div>
-                <p class="article-description">${article.content.substring(
-                  0,
-                  150
-                )}...</p>
-            </div>
-        </article>
-
+            </article>
+        </a>
     `;
   }
 
@@ -74,37 +55,44 @@ document.addEventListener("DOMContentLoaded", () => {
     isLoading = true;
 
     try {
-      // Construire l'URL avec les paramètres de pagination
-      let url = `${API_URL}/articles?page=${page}&limit=${articlesPerPage}`;
+      const url = `${API_URL}/articles?page=${page}&limit=${articlesPerPage}`;
+      console.log("Chargement des articles depuis:", url);
 
       const response = await fetch(url);
-      if (!response.ok)
+      if (!response.ok) {
         throw new Error("Erreur lors de la récupération des articles");
+      }
 
-      const data = await response.json();
+      const result = await response.json();
+      console.log("Données reçues:", result);
+
+      const articles = result.data.articles;
       const articlesContainer = document.querySelector(".articles-list");
 
-      // Si c'est la première page, on vide le conteneur
+      if (!articles || articles.length === 0) {
+        console.log("Aucun article trouvé");
+        articlesContainer.innerHTML = "<p>Aucun article disponible</p>";
+        return;
+      }
+
       if (page === 1) {
         articlesContainer.innerHTML = "";
       }
 
-      // Ajouter les nouveaux articles
-      data.articles.forEach((article) => {
-        articlesContainer.innerHTML += createArticleCard(article);
+      articles.forEach((article) => {
+        console.log("Traitement de l'article:", article);
+        const cardHtml = createArticleCard(article);
+        articlesContainer.innerHTML += cardHtml;
       });
 
-      // Gérer le bouton "Voir plus"
+      // Gestion du bouton "Voir plus"
       const voirPlusBtn = document.querySelector(".voir-plus");
-      if (data.articles.length < articlesPerPage) {
-        voirPlusBtn.style.display = "none";
-      } else {
-        voirPlusBtn.style.display = "block";
+      if (voirPlusBtn) {
+        voirPlusBtn.style.display =
+          articles.length < articlesPerPage ? "none" : "block";
       }
-
-      currentPage = page;
     } catch (error) {
-      console.error("Erreur:", error);
+      console.error("Erreur lors du chargement des articles:", error);
     } finally {
       isLoading = false;
     }

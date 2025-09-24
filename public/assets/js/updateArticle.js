@@ -85,23 +85,15 @@ document.addEventListener("DOMContentLoaded", () => {
   updateButton.addEventListener("click", async (e) => {
     e.preventDefault();
 
-    // Réinitialisation des erreurs
-    articleForm
-      .querySelectorAll(".error")
-      .forEach((span) => (span.textContent = ""));
-    articleForm
-      .querySelectorAll(".error-input")
-      .forEach((input) => input.classList.remove("error-input"));
-
     // Validation du formulaire
     const { valid, errors } = validateArticleForm(articleForm);
     if (!valid) {
-      for (const [field, message] of Object.entries(errors)) {
+      Object.entries(errors).forEach(([field, message]) => {
         const errorSpan = articleForm.querySelector(`[data-error="${field}"]`);
         const input = articleForm.querySelector(`[name="${field}"]`);
         if (errorSpan) errorSpan.textContent = message;
         if (input) input.classList.add("error-input");
-      }
+      });
       return;
     }
 
@@ -109,15 +101,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(articleForm);
       const imageFile = formData.get("image");
 
-      // Récupérer le token
+      // Récupération des tokens
       const token = localStorage.getItem("JWTtoken");
-      console.log("Token envoyé:", token); // Debug
+      const csrfToken = document.querySelector(
+        'input[name="csrf_token"]'
+      ).value;
 
       if (!token) {
         throw new Error("Vous devez être connecté pour modifier un article");
       }
 
-      // Préparer les données de l'article
+      // Préparation des données
       const articleUpdateData = {
         title: formData.get("title"),
         introduction: formData.get("introduction"),
@@ -129,58 +123,34 @@ document.addEventListener("DOMContentLoaded", () => {
           .filter(Boolean),
       };
 
-      async function updateArticle(articleId, articleData) {
-        const token = localStorage.getItem("JWTtoken");
-        const csrfToken = document.querySelector(
-          'input[name="csrf_token"]'
-        ).value;
-
-        const response = await fetch(`${API_URL}/articles/${articleId}`, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "X-CSRF-Token": csrfToken,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(articleData),
-        });
-
-        if (!response.ok) {
-          throw new Error("Erreur lors de la modification de l'article");
-        }
-
-        return response.json();
-      }
-
-      // 1. Mettre à jour le texte
-      const response = await fetch(
-        `${API_URL}/articles/${articleData.id_article}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(articleUpdateData),
-        }
-      );
+      // 1. Mise à jour du texte
+      const response = await fetch(`${API_URL}/articles/${articleData.id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-CSRF-Token": csrfToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(articleUpdateData),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Erreur lors de la mise à jour");
       }
 
-      // 2. Si une nouvelle image est sélectionnée, l'uploader
+      // 2. Upload de la nouvelle image si présente
       if (imageFile && imageFile.size > 0) {
         const imageFormData = new FormData();
         imageFormData.append("image", imageFile);
 
         const imageResponse = await fetch(
-          `${API_URL}/articles/${articleData.id_article}/image`,
+          `${API_URL}/articles/${articleData.id}/image`,
           {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
+              "X-CSRF-Token": csrfToken,
             },
             body: imageFormData,
           }
@@ -191,13 +161,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Nettoyage et redirection
+      // Succès : nettoyage et redirection
       sessionStorage.removeItem("articleToEdit");
-      window.location.href = `/article/${articleData.id_article}`;
+      window.location.href = `/article/${articleData.id}`;
     } catch (error) {
       console.error("Erreur:", error);
       message.textContent = error.message;
       message.style.color = "red";
+      // Afficher un message plus convivial à l'utilisateur
+      message.textContent =
+        "Une erreur est survenue lors de la modification de l'article. Veuillez réessayer.";
     }
   });
 });

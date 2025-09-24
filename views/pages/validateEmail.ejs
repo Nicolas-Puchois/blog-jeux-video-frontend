@@ -4,6 +4,16 @@
     id="api-url"
     value="<%= typeof API_URL !== 'undefined' ? API_URL : '' %>"
   />
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="<%= process.env.CSRF_TOKEN %>"
+  />
+  <input
+    type="hidden"
+    name="csrf_token"
+    value="<%= typeof CSRF_TOKEN !== 'undefined' ? CSRF_TOKEN : '' %>"
+  />
   <div class="message-container">
     <div id="verify-msg">Vérification de votre email en cours...</div>
     <div id="login-link" style="display: none">
