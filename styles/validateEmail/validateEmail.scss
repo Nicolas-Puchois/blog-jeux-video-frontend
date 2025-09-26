@@ -12,11 +12,11 @@
 
   #login-link {
     a {
-      color: var(--accent-primary);
+      color: white;
       display: block;
 
       &:hover {
-        color: var(--accent-secondary);
+        color: black;
       }
     }
   }
